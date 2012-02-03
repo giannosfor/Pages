@@ -1,0 +1,3 @@
+A GUI Application for managing a (sample of a) database storing articles.
+Entry,delete and display are the current functions of the API.
+During the process Edit will be the next step.
