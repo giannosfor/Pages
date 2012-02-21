@@ -13,8 +13,9 @@ public class DeletePanel extends javax.swing.JPanel {
     private DatabaseManagement databasemanagement;
     private Vector<Article> articles;
 
-    public DeletePanel() {
+    public DeletePanel(MainForm main) {
         try {
+            main.setDisabledItem(MainForm.delete);
             databasemanagement = new DatabaseManagement();
             articles = databasemanagement.getArticles();
             initComponents();

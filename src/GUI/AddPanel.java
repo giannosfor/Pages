@@ -11,10 +11,10 @@ public class AddPanel extends javax.swing.JPanel {
 
     private final DatabaseManagement databasemanagement;
 
-    public AddPanel() {
+    public AddPanel(MainForm main) {
+        main.setDisabledItem(main.Add);
         databasemanagement = new DatabaseManagement();
         initComponents();
-
     }
 
     @SuppressWarnings("unchecked")
@@ -81,7 +81,7 @@ public class AddPanel extends javax.swing.JPanel {
     private void saveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_savebuttonMouseClicked
         String titletext = title.getText();
         try {
-            if (titletext.trim().equals("") || textarea.getText().trim().equals("")) {
+            if (titletext.trim().isEmpty() || textarea.getText().trim().isEmpty()) {
                 throw new NoInputException();
             }
             if (titletext.length() > 40) {

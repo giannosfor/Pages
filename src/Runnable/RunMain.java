@@ -28,7 +28,11 @@ public class RunMain {
 
             @Override
             public void run() {
-                new MainForm("Article Manager",new BroswePanel()).setVisible(true);
+                MainForm main = new MainForm("Article Manger");
+                BroswePanel broswepanel = new BroswePanel();
+                broswepanel.setItemDisabled(main);
+                main.addPanel(broswepanel);
+                main.setVisible(true);
             }
         });
     }

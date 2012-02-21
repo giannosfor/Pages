@@ -2,26 +2,37 @@ package GUI;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class MainForm extends javax.swing.JFrame {
+public final class MainForm extends javax.swing.JFrame {
 
-    JPanel current;
+    private JPanel current;
+    private JMenuItem disableditem = Main;
+
+    public MainForm(String title) {
+        setTitle(title);
+        initComponents();
+    }
 
     public MainForm(JPanel panel) {
         this(null, panel);
     }
 
     public MainForm(String title, JPanel panel) {
-        current = panel;
-        setTitle(title);
-        add(panel);
-        initComponents();
+        this(title);
+        addPanel(panel);
+    }
 
+    public void addPanel(JPanel panel) {
+        current = panel;     
+        add(current);
+        setResolution();
+        setLocationRelativeTo(null);
+    }
 
-        Main.setEnabled(false);
-
+    private void setResolution() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         if (screenSize.width > 900 && screenSize.height > 700) {
@@ -29,15 +40,23 @@ public class MainForm extends javax.swing.JFrame {
         } else {
             setSize(screenSize.width / 2, screenSize.height / 2);
         }
-        setLocationRelativeTo(null);
     }
 
-    private void alteratePanel(JPanel panel) {
+    private void alteratePanel(JPanel panel) { 
         remove(current);
         current = panel;
         add(current);
         invalidate();
         validate();
+    }
+
+    protected void setDisabledItem(JMenuItem item) {
+        disableditem = item;
+        disableditem.setEnabled(false);
+    }
+
+    protected void changeMenuItem() {
+        disableditem.setEnabled(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -46,11 +65,8 @@ public class MainForm extends javax.swing.JFrame {
 
         jMenuBar1 = new javax.swing.JMenuBar();
         Menu = new javax.swing.JMenu();
-        Main = new javax.swing.JMenuItem();
         Exit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        Add = new javax.swing.JMenuItem();
-        delete = new javax.swing.JMenuItem();
         About = new javax.swing.JMenu();
         Info = new javax.swing.JMenuItem();
 
@@ -119,8 +135,9 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddActionPerformed
-        Main.setEnabled(true);
-        alteratePanel(new AddPanel());
+        changeMenuItem();
+        alteratePanel(new AddPanel(this));
+        
     }//GEN-LAST:event_AddActionPerformed
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
@@ -128,8 +145,8 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_ExitActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        Main.setEnabled(true);
-        alteratePanel(new DeletePanel());
+        changeMenuItem();
+        alteratePanel(new DeletePanel(this));
     }//GEN-LAST:event_deleteActionPerformed
 
     private void InfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InfoActionPerformed
@@ -148,17 +165,17 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_InfoActionPerformed
 
     private void MainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MainActionPerformed
-        Main.setEnabled(false);
-        alteratePanel(new BroswePanel());
+        changeMenuItem();
+        alteratePanel(new BroswePanel(this));
     }//GEN-LAST:event_MainActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu About;
-    private javax.swing.JMenuItem Add;
+    protected static final javax.swing.JMenuItem Add = new javax.swing.JMenuItem();
     private javax.swing.JMenuItem Exit;
     private javax.swing.JMenuItem Info;
-    private javax.swing.JMenuItem Main;
+    protected static final javax.swing.JMenuItem Main = new javax.swing.JMenuItem();
     private javax.swing.JMenu Menu;
-    private javax.swing.JMenuItem delete;
+    protected static final javax.swing.JMenuItem delete = new javax.swing.JMenuItem();
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables

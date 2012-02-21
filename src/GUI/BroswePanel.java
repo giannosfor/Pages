@@ -1,8 +1,8 @@
 package GUI;
 
+import API.ChangedPanel;
 import API.DatabaseManagement;
 import Beans.Article;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,11 +12,17 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JList;
-
-public class BroswePanel extends javax.swing.JPanel {
+import javax.swing.JPanel;
+//To exo kanei final
+public final class BroswePanel extends JPanel implements ChangedPanel {
 
     private DatabaseManagement databasemanagement;
     private Vector<Article> articles;
+
+    public BroswePanel(MainForm main) {
+        this();
+        setItemDisabled(main);
+    }
 
     public BroswePanel() {
         try {
@@ -30,8 +36,7 @@ public class BroswePanel extends javax.swing.JPanel {
                     JList theList = (JList) mouseEvent.getSource();
                     int index = theList.locationToIndex(mouseEvent.getPoint());
                     textarea.setText(
-                            articles.get(index).getStory().toString()
-                            );
+                            articles.get(index).getStory().toString());
                 }
             };
             jList1.addMouseListener(mouseListener);
@@ -41,6 +46,12 @@ public class BroswePanel extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(BroswePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public void setItemDisabled(Object obj) {
+        MainForm main = (MainForm) obj;
+        main.setDisabledItem(MainForm.Main);
     }
 
     @SuppressWarnings("unchecked")

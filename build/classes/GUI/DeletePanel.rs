@@ -1,2 +1,0 @@
-GUI.DeletePanel
-GUI.MyListModel
