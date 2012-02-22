@@ -3,7 +3,7 @@ package GUI;
 import API.DatabaseManagement;
 import Beans.Article;
 import java.sql.SQLException;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractListModel;
@@ -11,17 +11,17 @@ import javax.swing.AbstractListModel;
 public class DeletePanel extends javax.swing.JPanel {
 
     private DatabaseManagement databasemanagement;
-    private Vector<Article> articles;
+    private ArrayList<Article> articles;
 
     public DeletePanel(MainForm main) {
-        try {
+//        try {
             main.setDisabledItem(MainForm.delete);
-            databasemanagement = new DatabaseManagement();
+            databasemanagement = main.getDatabase();
             articles = databasemanagement.getArticles();
             initComponents();
-        } catch (SQLException ex) {
-            Logger.getLogger(DeletePanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(DeletePanel.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     @SuppressWarnings("unchecked")
@@ -87,9 +87,9 @@ public class DeletePanel extends javax.swing.JPanel {
 
 class MyListModel extends AbstractListModel {
 
-    Vector<Article> articles = new Vector<Article>();
+    ArrayList<Article> articles = new ArrayList<Article>();
 
-    public MyListModel(Vector<Article> article) {
+    public MyListModel(ArrayList<Article> article) {
         articles = article;
     }
 

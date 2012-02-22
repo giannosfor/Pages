@@ -1,11 +1,12 @@
-
 package Runnable;
 
-import GUI.BroswePanel;
+import GUI.LoginPanel;
 import GUI.MainForm;
+import javax.swing.JFrame;
 
 public class RunMain {
-     public static void main(String args[]) {
+
+    public static void main(String args[]) {
 
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -28,11 +29,12 @@ public class RunMain {
 
             @Override
             public void run() {
-                MainForm main = new MainForm("Article Manger");
-                BroswePanel broswepanel = new BroswePanel();
-                broswepanel.setItemDisabled(main);
-                main.addPanel(broswepanel);
-                main.setVisible(true);
+                JFrame frame = new JFrame("Login");
+                frame.add(new LoginPanel(frame));
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.pack();
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
             }
         });
     }

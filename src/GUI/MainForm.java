@@ -1,5 +1,6 @@
 package GUI;
 
+import API.DatabaseManagement;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JMenuItem;
@@ -10,20 +11,27 @@ public final class MainForm extends javax.swing.JFrame {
 
     private JPanel current;
     private JMenuItem disableditem = Main;
+    private DatabaseManagement database;
+    
 
-    public MainForm(String title) {
+    public MainForm(String title,DatabaseManagement dbase) {
+        database = dbase;
         setTitle(title);
         initComponents();
     }
-
+    
     public MainForm(JPanel panel) {
-        this(null, panel);
-    }
-
-    public MainForm(String title, JPanel panel) {
-        this(title);
         addPanel(panel);
     }
+
+//    public MainForm(JPanel panel) {
+//        this(null, panel);
+//    }
+
+//    public MainForm(String title, JPanel panel) {
+//        this(title);
+//        addPanel(panel);
+//    }
 
     public void addPanel(JPanel panel) {
         current = panel;     
@@ -179,4 +187,8 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
+
+    public DatabaseManagement getDatabase() {
+        return database;
+    }
 }

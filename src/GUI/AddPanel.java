@@ -3,6 +3,7 @@ package GUI;
 import API.DatabaseManagement;
 import Beans.Article;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -10,11 +11,14 @@ import javax.swing.JOptionPane;
 public class AddPanel extends javax.swing.JPanel {
 
     private final DatabaseManagement databasemanagement;
+    private ArrayList<Article> articles;
 
     public AddPanel(MainForm main) {
-        main.setDisabledItem(main.Add);
-        databasemanagement = new DatabaseManagement();
-        initComponents();
+   
+            main.setDisabledItem(main.Add);
+            databasemanagement = main.getDatabase();
+            articles = databasemanagement.getArticles();
+            initComponents();
     }
 
     @SuppressWarnings("unchecked")
@@ -88,11 +92,11 @@ public class AddPanel extends javax.swing.JPanel {
                 titletext = titletext.substring(0, 40);
             }
 
-            Article article = new Article(titletext, textarea.getText());
-
+            Article article = new Article(titletext, textarea.getText());           
             databasemanagement.addArticle(article);
-            textarea.setText("");
-            title.setText("");
+            articles.add(article);
+            textarea.setText(null);
+            title.setText(null);
 
         } catch (SQLException sqle) {
             Logger.getLogger(AddPanel.class.getName()).log(Level.SEVERE, null, sqle);

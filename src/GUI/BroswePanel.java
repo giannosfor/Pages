@@ -8,7 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JList;
@@ -17,18 +17,19 @@ import javax.swing.JPanel;
 public final class BroswePanel extends JPanel implements ChangedPanel {
 
     private DatabaseManagement databasemanagement;
-    private Vector<Article> articles;
+    private ArrayList<Article> articles;
 
     public BroswePanel(MainForm main) {
-        this();
-        setItemDisabled(main);
-    }
-
-    public BroswePanel() {
-        try {
-            databasemanagement = new DatabaseManagement();
+//        this();
+//        setItemDisabled(main);
+//    }
+//
+//    public BroswePanel() {
+//        try {
+            databasemanagement = main.getDatabase();
             articles = databasemanagement.getArticles();
             initComponents();
+
             MouseListener mouseListener = new MouseAdapter() {
 
                 @Override
@@ -39,13 +40,16 @@ public final class BroswePanel extends JPanel implements ChangedPanel {
                             articles.get(index).getStory().toString());
                 }
             };
+
             jList1.addMouseListener(mouseListener);
             textarea.setEditable(false);
             jList1.setFont(new Font("sansserif", Font.BOLD, 12));
             //jList1.setForeground(Color.BLUE);
-        } catch (SQLException ex) {
-            Logger.getLogger(BroswePanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(BroswePanel.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+
+        setItemDisabled(main);
     }
 
     @Override
