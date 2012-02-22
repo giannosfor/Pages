@@ -14,11 +14,11 @@ public class AddPanel extends javax.swing.JPanel {
     private ArrayList<Article> articles;
 
     public AddPanel(MainForm main) {
-   
-            main.setDisabledItem(main.Add);
-            databasemanagement = main.getDatabase();
-            articles = databasemanagement.getArticles();
-            initComponents();
+
+        main.setDisabledItem(MainForm.Add);
+        databasemanagement = main.getDatabase();
+        articles = databasemanagement.getArticles();
+        initComponents();
     }
 
     @SuppressWarnings("unchecked")
@@ -89,10 +89,20 @@ public class AddPanel extends javax.swing.JPanel {
                 throw new NoInputException();
             }
             if (titletext.length() > 40) {
+                int n = JOptionPane.showConfirmDialog(
+                        this,
+                        "Your title is to large.\n"
+                        + "Do you want constrain to 40 characters? ",
+                        null,
+                        JOptionPane.YES_NO_OPTION);
+                if (n == JOptionPane.NO_OPTION) {
+                    return;
+                }
+
                 titletext = titletext.substring(0, 40);
             }
 
-            Article article = new Article(titletext, textarea.getText());           
+            Article article = new Article(titletext, textarea.getText());
             databasemanagement.addArticle(article);
             articles.add(article);
             textarea.setText(null);
