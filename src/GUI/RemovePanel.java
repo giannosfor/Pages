@@ -1,5 +1,6 @@
 package GUI;
 
+import API.Connector;
 import API.DatabaseManagement;
 import Beans.Article;
 import java.sql.SQLException;
@@ -7,21 +8,18 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractListModel;
+import javax.swing.JPanel;
 
-public class DeletePanel extends javax.swing.JPanel {
+public abstract class RemovePanel extends JPanel implements Connector {
 
     private DatabaseManagement databasemanagement;
     private ArrayList<Article> articles;
 
-    public DeletePanel(MainForm main) {
-//        try {
-            main.setDisabledItem(MainForm.delete);
-            databasemanagement = main.getDatabase();
-            articles = databasemanagement.getArticles();
-            initComponents();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(DeletePanel.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+    public RemovePanel() {
+        setDisabledItem();
+        databasemanagement = getDatabase();
+        articles = databasemanagement.getArticles();
+        initComponents();
     }
 
     @SuppressWarnings("unchecked")
@@ -29,10 +27,10 @@ public class DeletePanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList(new MyListModel(articles));
+        list = new javax.swing.JList(new ListModel(articles));
         deletebutton = new javax.swing.JButton();
 
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(list);
 
         deletebutton.setText("Delete");
         deletebutton.addActionListener(new java.awt.event.ActionListener() {
@@ -67,44 +65,47 @@ public class DeletePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void deletebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletebuttonActionPerformed
-        int num = jList1.getSelectedIndex();
+        int num = list.getSelectedIndex();
         if (num != -1) {
             try {
                 databasemanagement.deleteArticle(articles.get(num));
-                MyListModel model = (MyListModel)jList1.getModel();
+                ListModel model = (ListModel) list.getModel();
                 model.removeElementAt(num);
             } catch (SQLException ex) {
-                Logger.getLogger(DeletePanel.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RemovePanel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_deletebuttonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton deletebutton;
-    private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList list;
     // End of variables declaration//GEN-END:variables
+
+    class ListModel extends AbstractListModel {
+
+        ArrayList<Article> articles = new ArrayList<Article>();
+
+        public ListModel(ArrayList<Article> article) {
+            articles = article;
+        }
+
+        @Override
+        public int getSize() {
+            return articles.size();
+        }
+
+        @Override
+        public Object getElementAt(int i) {
+            return articles.get(i).getTitle();
+        }
+
+        public void removeElementAt(int i) {
+            articles.remove(i);
+            fireIntervalRemoved(this, 0, articles.size());
+        }
+    }
 }
 
-class MyListModel extends AbstractListModel {
 
-    ArrayList<Article> articles = new ArrayList<Article>();
 
-    public MyListModel(ArrayList<Article> article) {
-        articles = article;
-    }
-
-    @Override
-    public int getSize() {
-        return articles.size();
-    }
-
-    @Override
-    public Object getElementAt(int i) {
-        return articles.get(i).getTitle();
-    }
-
-    public void removeElementAt(int i) {
-        articles.remove(i);
-        fireIntervalRemoved(this, 0, articles.size());
-    }
-}

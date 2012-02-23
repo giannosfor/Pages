@@ -1,5 +1,6 @@
 package GUI;
 
+import API.Connector;
 import API.DatabaseManagement;
 import Beans.Article;
 import java.sql.SQLException;
@@ -8,15 +9,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-public class AddPanel extends javax.swing.JPanel {
+public abstract class AddPanel extends javax.swing.JPanel implements Connector {
 
     private final DatabaseManagement databasemanagement;
     private ArrayList<Article> articles;
 
-    public AddPanel(MainForm main) {
-
-        main.setDisabledItem(MainForm.Add);
-        databasemanagement = main.getDatabase();
+    public AddPanel() {
+        setDisabledItem();
+        databasemanagement = getDatabase();
         articles = databasemanagement.getArticles();
         initComponents();
     }

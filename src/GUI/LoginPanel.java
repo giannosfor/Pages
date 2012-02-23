@@ -130,23 +130,13 @@ public class LoginPanel extends javax.swing.JPanel {
             if (usernamefield.getText().isEmpty() || passwordfield.getText().isEmpty()) {
                 throw new InputMismatchException();
             } else {
-
                 DatabaseBean databasebean = new DatabaseBean(usernamefield.getText(), passwordfield.getText());
                 DatabaseManagement databaseManagement = new DatabaseManagement(databasebean);
-
-                MainForm main = new MainForm("Article Manger", databaseManagement);
-                BroswePanel broswepanel = new BroswePanel(main);
-                //broswepanel.setItemDisabled(main);
-                main.addPanel(broswepanel);
-                main.setVisible(true);
-
+                new MainForm("Article Manger", databaseManagement).setVisible(true);
                 frame.dispose();
             }
 
         } catch (InputMismatchException inex) {
-            usernamefield.setText(null);
-            passwordfield.setText(null);
-
             JOptionPane.showMessageDialog(this,
                     "You must fill in the fields.",
                     "Error",
@@ -156,13 +146,12 @@ public class LoginPanel extends javax.swing.JPanel {
             passwordfield.setText(null);
 
             JOptionPane.showMessageDialog(this,
-                    "There is being an error on the database.\n"
-                    + "Possible username\\password mismatch.",
+                    "Username Password missmatch.\n",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
         } catch (ClassNotFoundException clex) {
             JOptionPane.showMessageDialog(this,
-                    "Drivers Problem",
+                    "Drivers Problem.",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
             System.exit(0);

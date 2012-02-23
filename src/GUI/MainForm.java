@@ -7,34 +7,17 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public final class MainForm extends javax.swing.JFrame {
+public final class MainForm extends javax.swing.JFrame {//implements Connector {
 
     private JPanel current;
     private JMenuItem disableditem = Main;
     private DatabaseManagement database;
-    
 
-    public MainForm(String title,DatabaseManagement dbase) {
+    public MainForm(String title, DatabaseManagement dbase) {
         database = dbase;
         setTitle(title);
         initComponents();
-    }
-    
-    public MainForm(JPanel panel) {
-        addPanel(panel);
-    }
-
-//    public MainForm(JPanel panel) {
-//        this(null, panel);
-//    }
-
-//    public MainForm(String title, JPanel panel) {
-//        this(title);
-//        addPanel(panel);
-//    }
-
-    public void addPanel(JPanel panel) {
-        current = panel;     
+        current = new BrosweModel();
         add(current);
         setResolution();
         setLocationRelativeTo(null);
@@ -50,7 +33,7 @@ public final class MainForm extends javax.swing.JFrame {
         }
     }
 
-    private void alteratePanel(JPanel panel) { 
+    private void alteratePanel(JPanel panel) {
         remove(current);
         current = panel;
         add(current);
@@ -58,12 +41,8 @@ public final class MainForm extends javax.swing.JFrame {
         validate();
     }
 
-    protected void setDisabledItem(JMenuItem item) {
-        disableditem = item;
-        disableditem.setEnabled(false);
-    }
-
     protected void changeMenuItem() {
+
         disableditem.setEnabled(true);
     }
 
@@ -113,14 +92,14 @@ public final class MainForm extends javax.swing.JFrame {
         });
         jMenu2.add(Add);
 
-        delete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK));
-        delete.setText("Delete");
-        delete.addActionListener(new java.awt.event.ActionListener() {
+        Remove.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK));
+        Remove.setText("Delete");
+        Remove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteActionPerformed(evt);
+                RemoveActionPerformed(evt);
             }
         });
-        jMenu2.add(delete);
+        jMenu2.add(Remove);
 
         jMenuBar1.add(jMenu2);
 
@@ -144,18 +123,18 @@ public final class MainForm extends javax.swing.JFrame {
 
     private void AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddActionPerformed
         changeMenuItem();
-        alteratePanel(new AddPanel(this));
-        
+        alteratePanel(new AddModel());
+
     }//GEN-LAST:event_AddActionPerformed
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_ExitActionPerformed
 
-    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+    private void RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveActionPerformed
         changeMenuItem();
-        alteratePanel(new DeletePanel(this));
-    }//GEN-LAST:event_deleteActionPerformed
+        alteratePanel(new RemoveModel());
+    }//GEN-LAST:event_RemoveActionPerformed
 
     private void InfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InfoActionPerformed
         JOptionPane.showMessageDialog(this,
@@ -174,7 +153,7 @@ public final class MainForm extends javax.swing.JFrame {
 
     private void MainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MainActionPerformed
         changeMenuItem();
-        alteratePanel(new BroswePanel(this));
+        alteratePanel(new BrosweModel());
     }//GEN-LAST:event_MainActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu About;
@@ -183,12 +162,50 @@ public final class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem Info;
     protected static final javax.swing.JMenuItem Main = new javax.swing.JMenuItem();
     private javax.swing.JMenu Menu;
-    protected static final javax.swing.JMenuItem delete = new javax.swing.JMenuItem();
+    protected static final javax.swing.JMenuItem Remove = new javax.swing.JMenuItem();
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 
-    public DatabaseManagement getDatabase() {
-        return database;
+    class BrosweModel extends BroswePanel {
+
+        @Override
+        public void setDisabledItem() {
+            disableditem = Main;
+            disableditem.setEnabled(false);
+        }
+
+        @Override
+        public DatabaseManagement getDatabase() {
+            return database;
+        }
+    }
+
+    class AddModel extends AddPanel {
+
+        @Override
+        public void setDisabledItem() {
+            disableditem = Add;
+            disableditem.setEnabled(false);
+        }
+
+        @Override
+        public DatabaseManagement getDatabase() {
+            return database;
+        }
+    }
+
+    class RemoveModel extends RemovePanel {
+
+        @Override
+        public void setDisabledItem() {
+            disableditem = Remove;
+            disableditem.setEnabled(false);
+        }
+
+        @Override
+        public DatabaseManagement getDatabase() {
+            return database;
+        }
     }
 }
