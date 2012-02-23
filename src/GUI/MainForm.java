@@ -3,19 +3,18 @@ package GUI;
 import API.DatabaseManagement;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public final class MainForm extends javax.swing.JFrame {//implements Connector {
-
+public final class MainForm extends JFrame {
     private JPanel current;
     private JMenuItem disableditem = Main;
     private DatabaseManagement database;
 
-    public MainForm(String title, DatabaseManagement dbase) {
+    public MainForm(DatabaseManagement dbase) {
         database = dbase;
-        setTitle(title);
         initComponents();
         current = new BrosweModel();
         add(current);
@@ -42,7 +41,6 @@ public final class MainForm extends javax.swing.JFrame {//implements Connector {
     }
 
     protected void changeMenuItem() {
-
         disableditem.setEnabled(true);
     }
 
@@ -58,11 +56,12 @@ public final class MainForm extends javax.swing.JFrame {//implements Connector {
         Info = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Article Manager");
 
         Menu.setText("Menu");
 
         Main.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.ALT_MASK));
-        Main.setText("Main");
+        Main.setText("Browse");
         Main.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MainActionPerformed(evt);
@@ -93,7 +92,7 @@ public final class MainForm extends javax.swing.JFrame {//implements Connector {
         jMenu2.add(Add);
 
         Remove.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK));
-        Remove.setText("Delete");
+        Remove.setText("Remove");
         Remove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RemoveActionPerformed(evt);
@@ -124,7 +123,6 @@ public final class MainForm extends javax.swing.JFrame {//implements Connector {
     private void AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddActionPerformed
         changeMenuItem();
         alteratePanel(new AddModel());
-
     }//GEN-LAST:event_AddActionPerformed
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
@@ -168,13 +166,11 @@ public final class MainForm extends javax.swing.JFrame {//implements Connector {
     // End of variables declaration//GEN-END:variables
 
     class BrosweModel extends BroswePanel {
-
         @Override
         public void setDisabledItem() {
             disableditem = Main;
             disableditem.setEnabled(false);
         }
-
         @Override
         public DatabaseManagement getDatabase() {
             return database;
@@ -182,13 +178,11 @@ public final class MainForm extends javax.swing.JFrame {//implements Connector {
     }
 
     class AddModel extends AddPanel {
-
         @Override
         public void setDisabledItem() {
             disableditem = Add;
             disableditem.setEnabled(false);
         }
-
         @Override
         public DatabaseManagement getDatabase() {
             return database;
@@ -196,13 +190,11 @@ public final class MainForm extends javax.swing.JFrame {//implements Connector {
     }
 
     class RemoveModel extends RemovePanel {
-
         @Override
         public void setDisabledItem() {
             disableditem = Remove;
             disableditem.setEnabled(false);
         }
-
         @Override
         public DatabaseManagement getDatabase() {
             return database;

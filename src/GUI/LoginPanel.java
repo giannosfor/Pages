@@ -132,7 +132,7 @@ public class LoginPanel extends javax.swing.JPanel {
             } else {
                 DatabaseBean databasebean = new DatabaseBean(usernamefield.getText(), passwordfield.getText());
                 DatabaseManagement databaseManagement = new DatabaseManagement(databasebean);
-                new MainForm("Article Manger", databaseManagement).setVisible(true);
+                new MainForm(databaseManagement).setVisible(true);
                 frame.dispose();
             }
 

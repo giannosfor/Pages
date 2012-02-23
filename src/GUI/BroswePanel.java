@@ -3,7 +3,6 @@ package GUI;
 import API.Connector;
 import API.DatabaseManagement;
 import Beans.Article;
-import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -19,10 +18,8 @@ public abstract class BroswePanel extends JPanel implements Connector {
     public BroswePanel() {
         databasemanagement = getDatabase();
         articles = databasemanagement.getArticles();
-
         initComponents();
         MouseListener mouseListener = new MouseAdapter() {
-
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 JList theList = (JList) mouseEvent.getSource();
@@ -33,8 +30,6 @@ public abstract class BroswePanel extends JPanel implements Connector {
         };
         list.addMouseListener(mouseListener);
         textarea.setEditable(false);
-        list.setFont(new Font("sansserif", Font.BOLD, 12));
-
         setDisabledItem();
     }
     
@@ -48,10 +43,12 @@ public abstract class BroswePanel extends JPanel implements Connector {
         JScrollPane1 = new javax.swing.JScrollPane();
         textarea = new javax.swing.JTextArea();
 
+        list.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         list.setModel(new javax.swing.AbstractListModel() {
             public int getSize() { return articles.size(); }
             public Object getElementAt(int i) { return articles.get(i).getTitle(); }
         });
+        list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(list);
 
         splitpane.setLeftComponent(jScrollPane1);
