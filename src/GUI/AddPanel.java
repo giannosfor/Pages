@@ -88,6 +88,7 @@ public abstract class AddPanel extends javax.swing.JPanel implements Connector {
             if (titletext.trim().isEmpty() || textarea.getText().trim().isEmpty()) {
                 throw new NoInputException();
             }
+
             if (titletext.length() > 40) {
                 int n = JOptionPane.showConfirmDialog(
                         this,
@@ -98,7 +99,6 @@ public abstract class AddPanel extends javax.swing.JPanel implements Connector {
                 if (n == JOptionPane.NO_OPTION) {
                     return;
                 }
-
                 titletext = titletext.substring(0, 40);
             }
 
@@ -116,7 +116,7 @@ public abstract class AddPanel extends javax.swing.JPanel implements Connector {
                     JOptionPane.ERROR_MESSAGE);
         } catch (NoInputException nie) {
             JOptionPane.showMessageDialog(this,
-                    "You must fill in the fields.",
+                    nie.getMessage(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
@@ -134,6 +134,6 @@ public abstract class AddPanel extends javax.swing.JPanel implements Connector {
 class NoInputException extends Exception {
 
     public NoInputException() {
-        super("No input Exception");
+        super("You must fill in the fields.");
     }
 }

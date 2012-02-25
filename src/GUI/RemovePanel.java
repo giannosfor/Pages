@@ -27,7 +27,7 @@ public abstract class RemovePanel extends JPanel implements Connector {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        list = new javax.swing.JList(new ListModel(articles));
+        list = new javax.swing.JList(new ListModel());
         deletebutton = new javax.swing.JButton();
 
         jScrollPane1.setViewportView(list);
@@ -84,12 +84,6 @@ public abstract class RemovePanel extends JPanel implements Connector {
 
     class ListModel extends AbstractListModel {
 
-        ArrayList<Article> articles = new ArrayList<Article>();
-
-        public ListModel(ArrayList<Article> article) {
-            articles = article;
-        }
-
         @Override
         public int getSize() {
             return articles.size();
@@ -106,6 +100,3 @@ public abstract class RemovePanel extends JPanel implements Connector {
         }
     }
 }
-
-
-

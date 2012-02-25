@@ -3,33 +3,17 @@ package GUI;
 import API.Connector;
 import API.DatabaseManagement;
 import Beans.Article;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
 public abstract class BroswePanel extends JPanel implements Connector {
 
-    private DatabaseManagement databasemanagement;
-    private ArrayList<Article> articles;
+    private DatabaseManagement databasemanagement= getDatabase();
+    private ArrayList<Article> articles = databasemanagement.getArticles();
 
     public BroswePanel() {
-        databasemanagement = getDatabase();
-        articles = databasemanagement.getArticles();
         initComponents();
-        MouseListener mouseListener = new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent mouseEvent) {
-                JList theList = (JList) mouseEvent.getSource();
-                int index = theList.locationToIndex(mouseEvent.getPoint());
-                textarea.setText(
-                        articles.get(index).getStory().toString());
-            }
-        };
-        list.addMouseListener(mouseListener);
-        textarea.setEditable(false);
         setDisabledItem();
     }
     
@@ -38,9 +22,9 @@ public abstract class BroswePanel extends JPanel implements Connector {
     private void initComponents() {
 
         splitpane = new javax.swing.JSplitPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        listscrollpane = new javax.swing.JScrollPane();
         list = new javax.swing.JList();
-        JScrollPane1 = new javax.swing.JScrollPane();
+        textscrollpane = new javax.swing.JScrollPane();
         textarea = new javax.swing.JTextArea();
 
         list.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
@@ -49,15 +33,21 @@ public abstract class BroswePanel extends JPanel implements Connector {
             public Object getElementAt(int i) { return articles.get(i).getTitle(); }
         });
         list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(list);
+        list.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listClicked(evt);
+            }
+        });
+        listscrollpane.setViewportView(list);
 
-        splitpane.setLeftComponent(jScrollPane1);
+        splitpane.setLeftComponent(listscrollpane);
 
         textarea.setColumns(20);
+        textarea.setEditable(false);
         textarea.setRows(5);
-        JScrollPane1.setViewportView(textarea);
+        textscrollpane.setViewportView(textarea);
 
-        splitpane.setRightComponent(JScrollPane1);
+        splitpane.setRightComponent(textscrollpane);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -72,11 +62,19 @@ public abstract class BroswePanel extends JPanel implements Connector {
             .add(splitpane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void listClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listClicked
+        JList theList = (JList) evt.getSource();
+                int index = theList.locationToIndex(evt.getPoint());
+                textarea.setText(
+                        articles.get(index).getStory().toString());
+    }//GEN-LAST:event_listClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane JScrollPane1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList list;
+    private javax.swing.JScrollPane listscrollpane;
     private javax.swing.JSplitPane splitpane;
     private javax.swing.JTextArea textarea;
+    private javax.swing.JScrollPane textscrollpane;
     // End of variables declaration//GEN-END:variables
 }

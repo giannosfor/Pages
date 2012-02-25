@@ -4,20 +4,17 @@ import API.DatabaseManagement;
 import Beans.DatabaseBean;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
-import java.util.InputMismatchException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class LoginPanel extends javax.swing.JPanel {
 
-    private String username, password, server = "localhost";
     private JFrame frame;
+    private static DatabaseManagement databaseManagement;
 
     public LoginPanel(JFrame fr) {
         frame = fr;
         initComponents();
-        serverfield.setEnabled(false);
-        serverlabel.setEnabled(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -52,13 +49,10 @@ public class LoginPanel extends javax.swing.JPanel {
 
         jLabel3.setText("username");
 
-        serverfield.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                serverfieldActionPerformed(evt);
-            }
-        });
+        serverfield.setEnabled(false);
 
         serverlabel.setText("Server");
+        serverlabel.setEnabled(false);
 
         passwordfield.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -112,47 +106,38 @@ public class LoginPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void serverfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serverfieldActionPerformed
-    }//GEN-LAST:event_serverfieldActionPerformed
-
     private void localcheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_localcheckActionPerformed
-        if (localcheck.isSelected()) {
-            serverfield.setEnabled(false);
-            serverlabel.setEnabled(false);
-        } else {
-            serverfield.setEnabled(true);
-            serverlabel.setEnabled(true);
-        }
+        serverfield.setEnabled(!localcheck.isSelected());
+        serverlabel.setEnabled(!localcheck.isSelected());
+
     }//GEN-LAST:event_localcheckActionPerformed
 
     private void loginbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbuttonActionPerformed
         try {
-            if (usernamefield.getText().isEmpty() || passwordfield.getText().isEmpty()) {
-                throw new InputMismatchException();
-            } else {
+            if (usernamefield.getText().isEmpty() || passwordfield.getText().isEmpty())
+                throw new NoInputException();
+            
                 DatabaseBean databasebean = new DatabaseBean(usernamefield.getText(), passwordfield.getText());
-                DatabaseManagement databaseManagement = new DatabaseManagement(databasebean);
+                databaseManagement = new DatabaseManagement(databasebean);
                 new MainForm(databaseManagement).setVisible(true);
-                frame.dispose();
-            }
-
-        } catch (InputMismatchException inex) {
+                frame.dispose();     
+        } catch (NoInputException nie) {
             JOptionPane.showMessageDialog(this,
-                    "You must fill in the fields.",
+                    nie.getMessage(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
-        } catch (SQLException sqle) {
+        } catch (SQLException sqe) {
             usernamefield.setText(null);
             passwordfield.setText(null);
 
             JOptionPane.showMessageDialog(this,
-                    "Username Password missmatch.\n",
+                    "Username/Password missmatch.\n",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
-        } catch (ClassNotFoundException clex) {
+        } catch (ClassNotFoundException cle) {
             JOptionPane.showMessageDialog(this,
                     "Drivers Problem.",
-                    "Error",
+                    "Fatal Error",
                     JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
